@@ -27,3 +27,23 @@ app.listen(appEnv.port, '0.0.0.0', function() {
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
 });
+
+angular.module('dotplay', ['ui.bootstrap','ngRoute', 'ngAnimate', 'picardy.fontawesome', 'toastr', 'LocalStorageModule'])
+
+.config(function($routeProvider, localStorageServiceProvider) {
+  $routeProvider
+
+  .when('/app', {
+    templateUrl: 'public/menu.html'
+  })
+
+  .otherwise({
+    redirectTo: '/app'
+  });
+
+  localStorageServiceProvider.setPrefix('dotplay');
+})
+
+.run(function() {
+
+});
