@@ -1,5 +1,5 @@
 {
-	"name": "NodejsStarterApp",
+	"name": "dotplay",
 	"version": "0.0.1",
     "private": true,
 	"scripts": {
@@ -7,10 +7,18 @@
 	},
 	"dependencies": {
 		"express": "4.13.x",
-		"cfenv": "1.0.x"
+		"cfenv": "1.0.x",
+		"angular": "^1.4.9",
+    "angular-animate": "^1.4.9",
+    "angular-fontawesome": "^0.4.0",
+    "angular-local-storage": "^0.2.2",
+    "angular-route": "^1.4.9",
+    "angular-toastr": "^1.7.0",
+    "angular-ui-bootstrap": "^1.1.2",
+    "angular-ui-router": "^0.2.17"
 	},
 	"repository": {},
 	"engines": {
 		"node": "4.2.x"
-	} 
+	}
 }
