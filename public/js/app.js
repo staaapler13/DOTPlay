@@ -1,5 +1,11 @@
-var appname = angular.module('appname', []);
-appname.controller('appCtrl', ['$scope',
-  function($scope) {
-    $scope.greeting = { text: 'Hello' };
+angular.module('dotplay', [
+    'ngRoute',
+    'dotplay.menu'           // Newly added home module
+]).
+config(['$routeProvider', function($routeProvider) {
+    // Set defualt view of our app to home
+
+    $routeProvider.otherwise({
+        redirectTo: '/menu'
+    });
 }]);
