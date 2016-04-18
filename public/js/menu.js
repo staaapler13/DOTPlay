@@ -3,7 +3,7 @@ angular.module('dotplay.menu', ['ngRoute'])
 // Declared route
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/menu', {
-        templateUrl: 'public/menu.html',
+        templateUrl: 'menu.html',
         controller: 'MenuCtrl'
     });
 }])
