@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('dotplay.menu', ['ngRoute'])
 
 // Declared route

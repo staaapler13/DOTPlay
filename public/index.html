@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html ng-app="appname">
+<html lang="en" ng-app="dotplay">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Dotplay</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <head>
-    <script src="src/angular.js"></script>
-    <script src="js/app.js"></script>
-  </head>
 
-  <body>
-    <div ng-controller="appCtrl">
-      <p>{{greeting.text}}, world </p>
-    </div>
-  </body>
+  <!-- Angular -->
+  <script src="public/src/angular.min.js"></script>
+  <!-- Angular Router -->
+  <script src="public/src/angular-route.min.js"></script>
 
+  <!-- Controller -->
+  <script src="public/js/app.js"></script>
+  <script src="public/js/menu.js"></script>
+
+</head>
+
+<body>
+
+  <div ng-view></div>
+
+</body>
 </html>
