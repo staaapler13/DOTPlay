@@ -1,19 +1,13 @@
-angular.module('dotplay', ['ui.bootstrap','ngRoute', 'ngAnimate', 'picardy.fontawesome', 'toastr', 'LocalStorageModule'])
+'use strict';
 
-.config(function($routeProvider, localStorageServiceProvider) {
-  $routeProvider
+angular.module('dotplay', [
+    'ngRoute',
+    'dotplay.menu'           // Newly added home module
+]).
+config(['$routeProvider', function($routeProvider) {
+    // Set defualt view of our app to home
 
-  .when('/app', {
-    templateUrl: 'public/menu.html'
-  })
-
-  .otherwise({
-    redirectTo: '/app'
-  });
-
-  localStorageServiceProvider.setPrefix('dotplay');
-})
-
-.run(function() {
-
-});
+    $routeProvider.otherwise({
+        redirectTo: '/menu'
+    });
+}]);
