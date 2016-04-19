@@ -1,11 +1,27 @@
-angular.module('dotplay', [
-    'ngRoute',
-    'dotplay.menu'           // Newly added home module
-]).
-config(['$routeProvider', function($routeProvider) {
-    // Set defualt view of our app to home
 
-    $routeProvider.otherwise({
-        redirectTo: '/menu'
-    });
-}]);
+angular.module('dotplay', ['ui.bootstrap','ngRoute'])
+
+.config(function($routeProvider) {
+  $routeProvider
+
+  .when('/menu', {
+    templateUrl: 'menu.html',
+    controller: 'MenuCtrl'
+  })
+
+  .when('/play', {
+    cache: false, // Means controller will fire each time app enters /play
+    templateUrl: 'play.html',
+    controller: 'PlayCtrl'
+  })
+
+
+  .otherwise({
+    redirectTo: '/menu'
+  });
+
+})
+
+.run(function() {
+
+});

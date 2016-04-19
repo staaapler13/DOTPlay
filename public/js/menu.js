@@ -1,14 +1,8 @@
-angular.module('dotplay.menu', ['ngRoute'])
+angular.module('dotplay')
 
-// Declared route
-.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/menu', {
-        templateUrl: 'menu.html',
-        controller: 'MenuCtrl'
-    });
-}])
+.controller('MenuCtrl', function($scope, $rootScope, $location, $window) {
+  $scope.startGame = function () {
+    $location.path('play');
+  };
 
-// Home controller
-.controller('MenuCtrl', [function() {
-
-}]);
+});
