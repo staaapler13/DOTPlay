@@ -1,5 +1,5 @@
 
-angular.module('dotplay', ['ui.bootstrap','ngRoute'])
+angular.module('dotplay', ['ui.bootstrap','ngRoute', 'ngAnimate', 'picardy.fontawesome', 'toastr', 'LocalStorageModule'])
 
 .config(function($routeProvider) {
   $routeProvider
