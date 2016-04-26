@@ -23,9 +23,18 @@ var appEnv = cfenv.getAppEnv();
 
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-io.on('connection', function(){
-  console.log("server starting on " + appEnv.url);
+
+io.on('connection', function(socket){
+  console.log('hello!');
+    socket.on('test', function () {
+
+
+      socket.emit('hello client');
+
+      console.log('hello!');
+    });
  });
+
 server.listen(appEnv.port);
 
 // start server on the specified port and binding host
