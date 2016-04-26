@@ -17,17 +17,14 @@ angular.module('dotplay')
 			for(row = 1; row < max_rows + 1; row++) {
 				var circle = new createjs.Shape();
 				circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 10);
-				circle.x = 100 * row;
-				circle.y = 100 * collumn;
+				circle.x = 25 + (750/max_rows) * row;
+				circle.y = 25 + (750/max_collumns) * collumn;
 				stage.addChild(circle);
 				stage.update();
 			}
 		}
 	};
   
-  $scope.setupDots(5,5);
+  $scope.setupDots(10,10);
   
 });
-
-
-//scope.setupDots(5,5);
