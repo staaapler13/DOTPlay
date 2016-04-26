@@ -1,45 +1,85 @@
-/*eslint-env node*/
-
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
-
-// This application uses express as its web server
-// for more info, see: http://expressjs.com
 var express = require('express');
-
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
-
-// create a new express server
 var app = express();
-
-// serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
-
-// get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
-
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
+var rooms = {};
+
 io.on('connection', function(socket){
-  console.log('hello!');
-    socket.on('test', function () {
+  console.log('User connected');
+
+  socket.on('createRoom', function () {
+    // Generate room ID, then send it
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var accessCode = '';
+    // Worst case time complexity: O(∞)
+    do {
+      for (var i = 0; i < 4; i++) {
+        accessCode += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
+    } while (rooms[accessCode] !== undefined);
+
+    rooms[accessCode] = {
+      players: {},
+      gameStarted: false,
+      artist: undefined,
+      word: '',
+      index: 0
+    };
+
+    socket.emit('roomCreated', accessCode);
+
+    console.log('Created room with ID ' + accessCode);
+  });
 
 
-      socket.emit('hello client');
+  socket.on('joinRoom', function (accessCode, name) {
+    var room = rooms[accessCode];
 
-      console.log('hello!');
-    });
- });
+    if (room === undefined) {
+      console.log('Unknown room code "' + accessCode + '"');
+      socket.emit('roomJoined', false, 'Unknown room code "' + accessCode + '"');
+      return;
+    }
 
-server.listen(appEnv.port);
+    // Make sure name isn't taken already (Names are used as indices, so duplicates aren't allowed)
+    if (room.players[name]) {
+      console.log('Username "' + name + '" is already taken in room ' + accessCode);
+      socket.emit('roomJoined', false, 'The username "' + name + '" is already taken');
+      return;
+    }
 
-// start server on the specified port and binding host
-/*app.listen(appEnv.port, '0.0.0.0', function() {
+    // Make sure game hasn't already started
+    if (room.gameStarted) {
+      socket.emit('roomJoined', false, 'The game has already started.');
+      return;
+    }
 
-	// print a message when the server starts listening
+    // Join the room with given access code. emits will send to just this room now
+    socket.join(accessCode);
+
+    room.players[name] = {
+      name: name,
+      score: 0
+    };
+
+    socket.name = name;
+    socket.accessCode = accessCode;
+
+    console.log('Added player ' + name + ' to room ' + accessCode);
+
+    // Let the player know that the join was successful
+    socket.emit('roomJoined', true, 'Success');
+
+    // Inform all other players of the new player list
+    io.to(accessCode).emit('updatePlayerList', room.players);
+  });
+
+});
+
+server.listen(appEnv.port,function(){
   console.log("server starting on " + appEnv.url);
-});*/
+});
