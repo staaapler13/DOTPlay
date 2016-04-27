@@ -95,6 +95,10 @@ angular.module('dotplay')
   $rootScope.socket.on('clicked',function(name){
     var clickedline = stage.getChildByName(name);
     if(clickedline.isclicked == 0){
+		if(last_clicked) {
+			last_clicked.isclicked = 0;
+			last_clicked.alpha = .05;
+		}
       clickedline.alpha = 1;
       clickedline.isclicked = 1;
 	  last_clicked = clickedline;
@@ -145,8 +149,8 @@ angular.module('dotplay')
 			// check if line is horizontal, otherwise, assume it is vertical;
 			if(!line_name.indexOf("horizontal_line")) {
 				var coordinates = line_name.split("x");
-				var x = coordinates[1];
-				var y = coordinates[2];
+				var x = parseInt(coordinates[1]);
+				var y = parseInt(coordinates[2]);
 				var up, down, left, right;
 				// check upper box
 				if(coordinates[1]) {
@@ -154,7 +158,7 @@ angular.module('dotplay')
 					left = getElementByName("vertical_linex"+x+"x"+(y-1));
 					right = getElementByName("vertical_linex"+(x+1)+"x"+(y-1));
 					if(up.isclicked && left.isclicked && right.isclicked) {
-						$scope.addPoint;
+						$scope.addPoint();
 					}
 				}
 				// check lower box
@@ -163,14 +167,14 @@ angular.module('dotplay')
 					left = getElementByName("vertical_linex"+x+"x"+y);
 					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && left.isclicked && right.isclicked) {
-						$scope.addPoint;
+						$scope.addPoint();
 					}
 				}
 			} 
 			else {
 				var coordinates = line_name.split("x");
-				var x = coordinates[1];
-				var y = coordinates[2];
+				var x = parseInt(coordinates[1]);
+				var y = parseInt(coordinates[2]);
 				var up, down, left, right;
 				// check left box
 				if(coordinates[1]) {
@@ -178,7 +182,7 @@ angular.module('dotplay')
 					left = getElementByName("vertical_linex"+(x-1)+"x"+y);
 					down = getElementByName("horizontal_linex"+(x-1)+"x"+(y+1));
 					if(up.isclicked && left.isclicked && down.isclicked) {
-						$scope.addPoint;
+						$scope.addPoint();
 					}
 				}
 				// check right box
@@ -187,7 +191,7 @@ angular.module('dotplay')
 					up = getElementByName("horizontal_linex"+x+"x"+y);
 					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && up.isclicked && right.isclicked) {
-						$scope.addPoint;
+						$scope.addPoint();
 					}
 				}
 			}
