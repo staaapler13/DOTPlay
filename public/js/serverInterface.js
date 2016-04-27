@@ -20,6 +20,24 @@ angular.module('dotplay')
           };
         });
 
+        $rootScope.socket.on('taunted', function () {
+          if($rootScope.isArtist){
+            toastr.info('You taunted your opponent.');
+          }
+          else{
+            toastr.info('Your opponent thinks you are very bad at this game.');
+          }
+        });
+
+        $rootScope.socket.on('praised', function () {
+          if($rootScope.isArtist){
+            toastr.info('You praised your opponent.');
+          }
+          else{
+            toastr.info('Your opponent thinks you made a great move.');
+          }
+        });
+
         $rootScope.socket.on('playersInsufficient', function () {
           console.log('Need 2 players to start.');
           toastr.warning('Need 2 players to start.');

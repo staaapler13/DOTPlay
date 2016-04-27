@@ -163,6 +163,14 @@ io.on('connection', function(socket){
 
   });
 
+  socket.on('praise', function (accessCode) {
+      io.to(socket.accessCode).emit('praised');
+  });
+
+  socket.on('taunt', function (accessCode) {
+      io.to(socket.accessCode).emit('taunted');
+  });
+
 
 
 

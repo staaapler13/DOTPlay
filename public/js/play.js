@@ -16,6 +16,13 @@ angular.module('dotplay')
     $rootScope.socket.emit('confirm');
   };
 
+  $scope.taunt = function () {
+    $rootScope.socket.emit('taunt',roomService.getRoomID());
+  };
+
+  $scope.praise = function () {
+    $rootScope.socket.emit('praise',roomService.getRoomID());
+  };
 
   $scope.setupDots = function (max_collumns, max_rows) {
 		var collumn, row;
