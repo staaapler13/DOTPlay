@@ -1,0 +1,10 @@
+.score-name {
+  max-width: 132px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artist-name {
+  text-decoration: underline;
+}

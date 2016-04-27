@@ -27,7 +27,7 @@ io.on('connection', function(socket){
       gameStarted: false,
       artist: undefined,
       word: '',
-      index: 0
+      index: 1
     };
 
     socket.emit('roomCreated', accessCode);
@@ -76,6 +76,66 @@ io.on('connection', function(socket){
 
     // Inform all other players of the new player list
     io.to(accessCode).emit('updatePlayerList', room.players);
+  });
+
+  socket.on('startGame', function () {
+    var room = rooms[socket.accessCode];
+
+    if (room === undefined) {
+      // Err
+      return;
+    }
+
+    var numPlayers = Object.keys(room.players).length;
+    if (numPlayers < 2){
+      io.to(socket.accessCode).emit('playersInsufficient');
+      return;
+    }
+
+    if (room && !room.gameStarted) {
+
+
+      var roundTime = 30;
+
+      var assignArtist = function() {
+        room.gameStarted = true;
+        var numPlayers = Object.keys(room.players).length;
+
+        // Assign an artist by picking a random player
+        var names = Object.keys(room.players);
+
+
+        if(room.index == 1){
+          room.index = 0;
+        }
+        else if(room.index == 0){
+          room.index = 1;
+        }
+
+        room.artist = room.players[names[room.index]];
+
+        console.log(room.artist.name + ' is now the artist for room ' + socket.accessCode);
+
+        io.to(socket.accessCode).emit('gameStarted', roundTime);
+
+        io.to(socket.accessCode).emit('artistSelected', room.artist.name);
+
+
+      };
+      assignArtist();
+
+      // After 60 seconds, select a new artist
+      room.time = roundTime;
+      room.interval = setInterval(function() {
+        room.time--;
+        if (room.time <= 0) {
+         console.log('Assigning a new artist');
+         assignArtist();
+
+         room.time = roundTime;
+        }
+      }, 1000);
+    }
   });
 
 });

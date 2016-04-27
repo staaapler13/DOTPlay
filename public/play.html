@@ -1,9 +1,32 @@
 <!DOCTYPE html>
 <html>
 	<body>
+		<table id="scoreboard">
+	    <tr>
+	      <th>Player</th>
+	      <th>Score</th>
+	    </tr>
+	    <tr ng-repeat="player in playerList">
+	      <td ng-class="{'artist-name': player.name === artistName, 'score-name': true}">{{player.name}}</td>
+	      <td style="text-align: center">{{player.score}}</td>
+	    </tr>
+	  </table>
+
+		<div>
+	    <h4 style="font-weight: bold" align="middle">{{ time }}</h4>
+	    <h5 class="room-id" align="left">Room Code: {{ roomID }}</h5>
+	  </div>
+
+		<!-- progress bar -->
+	  <div class="progress">
+	    <div class="progress-bar" ng-class="{'active': gameStarted, 'progress-bar-striped': gameStarted}" id="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+	      <span class="sr-only"></span>
+	    </div>
+	  </div>
+
 		<canvas id="myCanvas" width="800" height="800"></canvas>
 	</body>
 	<button type="button" class="btn btn-primary" ng-click="backToMenu()">Back to menu</button>
-	<button type="button" class="btn btn-primary" ng-click="test()">Test toastr</button>
+	<button type="button" class="btn btn-primary" ng-click="startGame()">startGame</button>
 	<button type="button" class="btn btn-primary" ng-click="setupDots(5,5)">Setup Game</button>
 </html>

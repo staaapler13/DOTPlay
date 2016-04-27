@@ -21,8 +21,8 @@ angular.module('dotplay')
         });
 
         $rootScope.socket.on('playersInsufficient', function () {
-          console.log('Need at least 3 players to start.');
-          toastr.warning('Need at least 3 players to start.');
+          console.log('Need 2 players to start.');
+          toastr.warning('Need 2 players to start.');
         });
 
         $rootScope.socket.on('roomCreated', function (roomID) {
@@ -62,13 +62,12 @@ angular.module('dotplay')
             console.log('I\'m the artist!');
             $rootScope.isArtist = true;
 
-            toastr.info('You are the artist now', 'Your turn');
+            toastr.info('Your move', 'Your turn');
           }
           else {
-            toastr.info(name + ' is the artist now');
+            toastr.info(name + ' is thinking now');
           }
 
-          $rootScope.clearCtx();
         });
       });
 
