@@ -154,18 +154,18 @@ angular.module('dotplay')
 				var up, down, left, right;
 				// check upper box
 				if(coordinates[1]) {
-					up = stage.getElementByName("horizontal_linex"+x+"x"+(y-1));
-					left = stage.getElementByName("vertical_linex"+x+"x"+(y-1));
-					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+(y-1));
+					up = stage.getChildByName("horizontal_linex"+x+"x"+(y-1));
+					left = stage.getChildByName("vertical_linex"+x+"x"+(y-1));
+					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+(y-1));
 					if(up.isclicked && left.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
 				}
 				// check lower box
 				if(coordinates[1]) {
-					down = stage.getElementByName("horizontal_linex"+x+"x"+(y+1));
-					left = stage.getElementByName("vertical_linex"+x+"x"+y);
-					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+y);
+					down = stage.getChildByName("horizontal_linex"+x+"x"+(y+1));
+					left = stage.getChildByName("vertical_linex"+x+"x"+y);
+					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && left.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
@@ -178,18 +178,18 @@ angular.module('dotplay')
 				var up, down, left, right;
 				// check left box
 				if(coordinates[1]) {
-					up = stage.getElementByName("horizontal_linex"+(x-1)+"x"+y);
-					left = stage.getElementByName("vertical_linex"+(x-1)+"x"+y);
-					down = stage.getElementByName("horizontal_linex"+(x-1)+"x"+(y+1));
+					up = stage.getChildByName("horizontal_linex"+(x-1)+"x"+y);
+					left = stage.getChildByName("vertical_linex"+(x-1)+"x"+y);
+					down = stage.getChildByName("horizontal_linex"+(x-1)+"x"+(y+1));
 					if(up.isclicked && left.isclicked && down.isclicked) {
 						$scope.addPoint();
 					}
 				}
 				// check right box
 				if(coordinates[1]) {
-					down = stage.getElementByName("horizontal_linex"+x+"x"+(y+1));
-					up = stage.getElementByName("horizontal_linex"+x+"x"+y);
-					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+y);
+					down = stage.getChildByName("horizontal_linex"+x+"x"+(y+1));
+					up = stage.getChildByName("horizontal_linex"+x+"x"+y);
+					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && up.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
