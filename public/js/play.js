@@ -199,5 +199,10 @@ angular.module('dotplay')
 		}
   };
 
+  
+   $rootScope.socket.on('clear_last_clicked',function(){
+    last_clicked = 0;
+	console.log("resting last_clicked")
+  });
 
 });

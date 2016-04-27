@@ -121,6 +121,8 @@ io.on('connection', function(socket){
         io.to(socket.accessCode).emit('gameStarted', roundTime);
 
         io.to(socket.accessCode).emit('artistSelected', room.artist.name);
+		
+		io.to(socket.accessCode).emit('clear_last_clicked');
 
 
       };
