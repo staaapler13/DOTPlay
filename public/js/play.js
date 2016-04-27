@@ -97,7 +97,7 @@ angular.module('dotplay')
     if(clickedline.isclicked == 0){
 		if(last_clicked) {
 			last_clicked.isclicked = 0;
-			last_clicked.alpha = .05;
+			last_clicked.alpha = 0.05;
 		}
       clickedline.alpha = 1;
       clickedline.isclicked = 1;
@@ -154,18 +154,18 @@ angular.module('dotplay')
 				var up, down, left, right;
 				// check upper box
 				if(coordinates[1]) {
-					up = getElementByName("horizontal_linex"+x+"x"+(y-1));
-					left = getElementByName("vertical_linex"+x+"x"+(y-1));
-					right = getElementByName("vertical_linex"+(x+1)+"x"+(y-1));
+					up = stage.getElementByName("horizontal_linex"+x+"x"+(y-1));
+					left = stage.getElementByName("vertical_linex"+x+"x"+(y-1));
+					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+(y-1));
 					if(up.isclicked && left.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
 				}
 				// check lower box
 				if(coordinates[1]) {
-					down = getElementByName("horizontal_linex"+x+"x"+(y+1));
-					left = getElementByName("vertical_linex"+x+"x"+y);
-					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
+					down = stage.getElementByName("horizontal_linex"+x+"x"+(y+1));
+					left = stage.getElementByName("vertical_linex"+x+"x"+y);
+					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && left.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
@@ -178,18 +178,18 @@ angular.module('dotplay')
 				var up, down, left, right;
 				// check left box
 				if(coordinates[1]) {
-					up = getElementByName("horizontal_linex"+(x-1)+"x"+y);
-					left = getElementByName("vertical_linex"+(x-1)+"x"+y);
-					down = getElementByName("horizontal_linex"+(x-1)+"x"+(y+1));
+					up = stage.getElementByName("horizontal_linex"+(x-1)+"x"+y);
+					left = stage.getElementByName("vertical_linex"+(x-1)+"x"+y);
+					down = stage.getElementByName("horizontal_linex"+(x-1)+"x"+(y+1));
 					if(up.isclicked && left.isclicked && down.isclicked) {
 						$scope.addPoint();
 					}
 				}
 				// check right box
 				if(coordinates[1]) {
-					down = getElementByName("horizontal_linex"+x+"x"+(y+1));
-					up = getElementByName("horizontal_linex"+x+"x"+y);
-					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
+					down = stage.getElementByName("horizontal_linex"+x+"x"+(y+1));
+					up = stage.getElementByName("horizontal_linex"+x+"x"+y);
+					right = stage.getElementByName("vertical_linex"+(x+1)+"x"+y);
 					if(down.isclicked && up.isclicked && right.isclicked) {
 						$scope.addPoint();
 					}
