@@ -171,6 +171,42 @@ io.on('connection', function(socket){
       io.to(socket.accessCode).emit('taunted');
   });
 
+  socket.on('leaveRoom', function () {
+    console.log(socket.name + ' disconnected from room ' + socket.accessCode);
+
+    var room = rooms[socket.accessCode];
+
+    if (room === undefined) {
+      console.log('Unknown room code "' + socket.accessCode + '"');
+      return;
+    }
+
+    if (room.players[socket.name] === undefined) {
+      console.log('Unknown username "' + socket.name + '"');
+      return;
+    }
+
+    if (room.artist && room.artist.name === room.players[socket.name]) {
+      console.log('Artist has left the game, picking a new one');
+
+      // TODO make sure new artist isn't the one that is leaving
+      assignArtist();
+    }
+
+    delete room.players[socket.name];
+
+    var players = Object.keys(room.players);
+
+    if (players.length === 0) {
+      console.log('Room ' + socket.accessCode + ' has become empty, deleting it.');
+      clearInterval(room.interval);
+      delete rooms[socket.accessCode];
+    }
+    else {
+      io.to(socket.accessCode).emit('updatePlayerList', room.players);
+    }
+  });
+
 
 
 

@@ -5,6 +5,8 @@ angular.module('dotplay')
   var stage = new createjs.Stage("myCanvas");
 
   $scope.backToMenu = function () {
+    $rootScope.socket.emit('leaveRoom', roomService.getRoomID(), $scope.username);
+    roomService.cleanup();
     $location.path('menu');
   };
 
