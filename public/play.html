@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<body>
+		<button type="button" align="middle" class="btn btn-primary" ng-click="backToMenu()">Back to menu</button>
 		<table id="scoreboard">
 	    <tr>
 	      <th>Player</th>
@@ -26,7 +27,12 @@
 
 		<canvas id="myCanvas" width="800" height="800"></canvas>
 	</body>
-	<button type="button" class="btn btn-primary" ng-click="backToMenu()">Back to menu</button>
-	<button type="button" class="btn btn-primary" ng-click="startGame()">startGame</button>
-	<button type="button" class="btn btn-primary" ng-click="setupDots(5,5)">Setup Game</button>
+
+	<div ng-hide="$root.gameStarted" id="playerButtons">
+		<button type="button" class="btn btn-primary" ng-click="startGame()">Start!</button>
+	</div>
+	<div ng-show="$root.isArtist" class="buttons">
+		<button type="button" class="btn btn-primary" ng-click="addPoint()">Add Point!</button>
+		<button type="button" class="btn btn-primary" ng-click="confirmMove()">Confirm Move!</button>
+	</div>
 </html>

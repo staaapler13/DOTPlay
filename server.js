@@ -6,6 +6,8 @@ var appEnv = cfenv.getAppEnv();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
+var confirm = 0;
+
 var rooms = {};
 
 io.on('connection', function(socket){
@@ -131,12 +133,38 @@ io.on('connection', function(socket){
         if (room.time <= 0) {
          console.log('Assigning a new artist');
          assignArtist();
-
          room.time = roundTime;
+        }
+        else if (confirm == 1){
+          confirm = 0;
+          console.log('Assigning a new artist');
+          assignArtist();
+          room.time = roundTime;
         }
       }, 1000);
     }
   });
+
+  socket.on('click', function(accessCode, linename){
+    accessCode = accessCode.toUpperCase();
+    io.to(accessCode).emit('clicked', linename);
+  });
+
+  socket.on('confirm', function () {
+      confirm = 1;
+      console.log('comfirm');
+  });
+
+  socket.on('add', function () {
+
+      rooms[socket.accessCode].artist.score++;
+      io.to(socket.accessCode).emit('updatePlayerList', rooms[socket.accessCode].players);
+
+
+  });
+
+
+
 
 });
 

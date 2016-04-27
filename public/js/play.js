@@ -2,17 +2,24 @@ angular.module('dotplay')
 
 .controller('PlayCtrl', function($scope, $rootScope, $location, $window, toastr, $interval, localStorageService, roomService) {
 
+  var stage = new createjs.Stage("myCanvas");
+
   $scope.backToMenu = function () {
     $location.path('menu');
   };
 
-  $scope.test = function () {
-    toastr.info('This is a test message.');
+  $scope.addPoint = function () {
+  $rootScope.socket.emit('add');
   };
+
+  $scope.confirmMove = function () {
+    $rootScope.socket.emit('confirm');
+  };
+
 
   $scope.setupDots = function (max_collumns, max_rows) {
 		var collumn, row;
-		var stage = new createjs.Stage("myCanvas");
+
 		for(collumn = 1; collumn < max_collumns + 1; collumn++){
 			for(row = 1; row < max_rows + 1; row++) {
 
@@ -31,12 +38,18 @@ angular.module('dotplay')
 					line.x = 20 + (750/max_rows) * row;
 					line.y = 25 + (750/max_collumns) * collumn;
 					line.alpha = 0.05;
+
+          line.isclicked = 0;
+
 					stage.addChild(line);
 					//line.graphics.beginFill("FireBrick").drawRect(0,0,10,-(750/max_rows));
 					line.on("click", function(evt) {
 						//alert("type: "+evt.type+" target: "+evt.target);
-						this.alpha = 1;
-						stage.update();
+						//this.alpha = 1;
+						//stage.update();
+            if($rootScope.isArtist){
+              $rootScope.socket.emit('click', roomService.getRoomID(), this.name);
+            }
 					});
 				}
 				// draw verticle lines
@@ -47,11 +60,19 @@ angular.module('dotplay')
 					line.x = 25 + (750/max_rows) * row;
 					line.y = 20 + (750/max_collumns) * collumn;
 					line.alpha = 0.05;
+
+          line.isclicked = 0;
+
 					stage.addChild(line);
 					line.on("click", function(evt) {
-						this.alpha = 1;
-						stage.update();
+						//this.alpha = 1;
+						//stage.update();
+            if($rootScope.isArtist){
+              $rootScope.socket.emit('click', roomService.getRoomID(), this.name);
+            }
 					});
+
+
 				}
 			}
 		}
@@ -59,6 +80,20 @@ angular.module('dotplay')
 	};
 
   $scope.setupDots(10,10);
+
+  $rootScope.socket.on('clicked',function(name){
+    var clickedline = stage.getChildByName(name);
+    if(clickedline.isclicked == 0){
+      clickedline.alpha = 1;
+      clickedline.isclicked = 1;
+    }
+    else if (clickedline.isclicked == 1){
+      clickedline.alpha = 0.05;
+      clickedline.isclicked = 0;
+    }
+    stage.update();
+    console.log(name + " " + clickedline.isclicked);
+  });
 
   $scope.playerList = roomService.getPlayerList();
   roomService.setPlayerListCallback(function (list) {
