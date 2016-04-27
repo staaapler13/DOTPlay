@@ -3,6 +3,7 @@ angular.module('dotplay')
 .controller('PlayCtrl', function($scope, $rootScope, $location, $window, toastr, $interval, localStorageService, roomService) {
 
   var stage = new createjs.Stage("myCanvas");
+  var last_clicked;
 
   $scope.backToMenu = function () {
     $rootScope.socket.emit('leaveRoom', roomService.getRoomID(), $scope.username);
@@ -15,6 +16,7 @@ angular.module('dotplay')
   };
 
   $scope.confirmMove = function () {
+	$scope.check_points();
     $rootScope.socket.emit('confirm');
   };
 
@@ -39,10 +41,10 @@ angular.module('dotplay')
 				circle.y = 25 + (750/max_collumns) * collumn;
 				stage.addChild(circle);
 
-				// draw horiontal lines
+				// draw horizontal lines
 				if(collumn > 1) {
 					var line = new createjs.Shape();
-					line.name = "vertical_line"+row+"x"+(collumn-1);
+					line.name = "vertical_linex"+row+"x"+(collumn-1);
 					line.graphics.beginFill("DeepSkyBlue").drawRect(0,0,10,-(750/max_rows));
 					line.x = 20 + (750/max_rows) * row;
 					line.y = 25 + (750/max_collumns) * collumn;
@@ -64,7 +66,7 @@ angular.module('dotplay')
 				// draw verticle lines
 				if(row > 1) {
 					var line = new createjs.Shape();
-					line.name = "horiontal_line"+(row-1)+"x"+collumn;
+					line.name = "horizontal_linex"+(row-1)+"x"+collumn;
 					line.graphics.beginFill("DeepSkyBlue").drawRect(0,0,-(750/max_collumns),10);
 					line.x = 25 + (750/max_rows) * row;
 					line.y = 20 + (750/max_collumns) * collumn;
@@ -93,8 +95,13 @@ angular.module('dotplay')
   $rootScope.socket.on('clicked',function(name){
     var clickedline = stage.getChildByName(name);
     if(clickedline.isclicked == 0){
+		if(last_clicked) {
+			last_clicked.isclicked = 0;
+			last_clicked.alpha = .05;
+		}
       clickedline.alpha = 1;
       clickedline.isclicked = 1;
+	  last_clicked = clickedline;
     }
     else if (clickedline.isclicked == 1){
       clickedline.alpha = 0.05;
@@ -134,6 +141,63 @@ angular.module('dotplay')
     $rootScope.socket.emit('startGame', roomService.getRoomID());
   };
 
+  $scope.check_points = function () {
+		if(last_clicked) {
+	  
+			var line_name = last_clicked.name;
+			
+			// check if line is horizontal, otherwise, assume it is vertical;
+			if(!line_name.indexOf("horizontal_line")) {
+				var coordinates = line_name.split("x");
+				var x = parseInt(coordinates[1]);
+				var y = parseInt(coordinates[2]);
+				var up, down, left, right;
+				// check upper box
+				if(coordinates[1]) {
+					up = getElementByName("horizontal_linex"+x+"x"+(y-1));
+					left = getElementByName("vertical_linex"+x+"x"+(y-1));
+					right = getElementByName("vertical_linex"+(x+1)+"x"+(y-1));
+					if(up.isclicked && left.isclicked && right.isclicked) {
+						$scope.addPoint();
+					}
+				}
+				// check lower box
+				if(coordinates[1]) {
+					down = getElementByName("horizontal_linex"+x+"x"+(y+1));
+					left = getElementByName("vertical_linex"+x+"x"+y);
+					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
+					if(down.isclicked && left.isclicked && right.isclicked) {
+						$scope.addPoint();
+					}
+				}
+			} 
+			else {
+				var coordinates = line_name.split("x");
+				var x = parseInt(coordinates[1]);
+				var y = parseInt(coordinates[2]);
+				var up, down, left, right;
+				// check left box
+				if(coordinates[1]) {
+					up = getElementByName("horizontal_linex"+(x-1)+"x"+y);
+					left = getElementByName("vertical_linex"+(x-1)+"x"+y);
+					down = getElementByName("horizontal_linex"+(x-1)+"x"+(y+1));
+					if(up.isclicked && left.isclicked && down.isclicked) {
+						$scope.addPoint();
+					}
+				}
+				// check right box
+				if(coordinates[1]) {
+					down = getElementByName("horizontal_linex"+x+"x"+(y+1));
+					up = getElementByName("horizontal_linex"+x+"x"+y);
+					right = getElementByName("vertical_linex"+(x+1)+"x"+y);
+					if(down.isclicked && up.isclicked && right.isclicked) {
+						$scope.addPoint();
+					}
+				}
+			}
+			last_clicked = 0;
+		}
+  };
 
 
 });
