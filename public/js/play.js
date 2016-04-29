@@ -153,7 +153,7 @@ angular.module('dotplay')
 				var y = parseInt(coordinates[2]);
 				var up, down, left, right;
 				// check upper box
-				if(coordinates[1]) {
+				if(x) {
 					up = stage.getChildByName("horizontal_linex"+x+"x"+(y-1));
 					left = stage.getChildByName("vertical_linex"+x+"x"+(y-1));
 					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+(y-1));
@@ -162,7 +162,7 @@ angular.module('dotplay')
 					}
 				}
 				// check lower box
-				if(coordinates[1]) {
+				if(x < 9) {
 					down = stage.getChildByName("horizontal_linex"+x+"x"+(y+1));
 					left = stage.getChildByName("vertical_linex"+x+"x"+y);
 					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+y);
@@ -177,7 +177,7 @@ angular.module('dotplay')
 				var y = parseInt(coordinates[2]);
 				var up, down, left, right;
 				// check left box
-				if(coordinates[1]) {
+				if(y) {
 					up = stage.getChildByName("horizontal_linex"+(x-1)+"x"+y);
 					left = stage.getChildByName("vertical_linex"+(x-1)+"x"+y);
 					down = stage.getChildByName("horizontal_linex"+(x-1)+"x"+(y+1));
@@ -186,7 +186,7 @@ angular.module('dotplay')
 					}
 				}
 				// check right box
-				if(coordinates[1]) {
+				if(y < 9) {
 					down = stage.getChildByName("horizontal_linex"+x+"x"+(y+1));
 					up = stage.getChildByName("horizontal_linex"+x+"x"+y);
 					right = stage.getChildByName("vertical_linex"+(x+1)+"x"+y);
